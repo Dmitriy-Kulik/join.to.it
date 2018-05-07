@@ -7,6 +7,10 @@
             <div class="card-body">
                 <div id="map"></div>
                 <script>
+                    function getMarkersData() {
+                        return markersData;
+                    }
+
                     var markersData = [];
 
                      var map, infoWindow;
@@ -216,7 +220,7 @@
                         async defer></script>
 
                 @if(Auth::user()->role == 'super_admin' || Auth::user()->role == 'admin')
-                    <form action="/" id='myform' name="myform" method="post">
+                    <form action="{{route('api.map.store')}}" id='myform' name="myform" method="post">
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" aria-describedby="title" value="london" placeholder="Add title">
@@ -225,67 +229,15 @@
                             <label for="address">Add address</label>
                             <input type="text" class="form-control" id="address" name="address" aria-describedby="address" value="london" placeholder="Add address">
                         </div>
+
+                            <input type="hidden" name="coord[lat]" value="0">
+
+
                         <input type="button" class="btn btn-primary run" onclick="GetAddress()" value="Add a marker to the map"></input>
-                        <input class="subm btn btn-primary run" type="button" onclick="SaveMarkers()" value="Save markers"><br>
+                        <input class="subm btn btn-primary run" type="submit" onclick="SaveMarkers()" value="Save markers"><br>
                     </form>
                 @endif
             </div>
         </div>
     </div>
 @endsection
-
-{{--@extends('layouts.app')--}}
-
-{{--@section('content')--}}
-
-{{--<link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">--}}
-{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1RhDovpHGcE9hrLnbxJY7D5qxB93NwmY&callback=initialize"--}}
-{{--async defer></script>--}}
-{{--<script>--}}
-    {{--var geocoder;--}}
-    {{--var map;--}}
-    {{--var mapOptions = {--}}
-        {{--zoom: 17,--}}
-        {{--mapTypeId: google.maps.MapTypeId.ROADMAP--}}
-    {{--}--}}
-    {{--var marker;--}}
-    {{--function initialize() {--}}
-        {{--geocoder = new google.maps.Geocoder();--}}
-        {{--map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);--}}
-        {{--codeAddress();--}}
-    {{--}--}}
-    {{--function codeAddress() {--}}
-        {{--var address = document.getElementById('address').value;--}}
-        {{--geocoder.geocode( { 'address': address}, function(results, status) {--}}
-            {{--if (status == google.maps.GeocoderStatus.OK) {--}}
-                {{--map.setCenter(results[0].geometry.location);--}}
-                {{--if(marker)--}}
-                    {{--marker.setMap(null);--}}
-                {{--marker = new google.maps.Marker({--}}
-                    {{--map: map,--}}
-                    {{--position: results[0].geometry.location,--}}
-                    {{--draggable: true--}}
-                {{--});--}}
-                {{--google.maps.event.addListener(marker, "dragend", function() {--}}
-                    {{--document.getElementById('lat').value = marker.getPosition().lat();--}}
-                    {{--document.getElementById('lng').value = marker.getPosition().lng();--}}
-                {{--});--}}
-                {{--document.getElementById('lat').value = marker.getPosition().lat();--}}
-                {{--document.getElementById('lng').value = marker.getPosition().lng();--}}
-            {{--} else {--}}
-                {{--alert('Geocode was not successful for the following reason: ' + status);--}}
-            {{--}--}}
-        {{--});--}}
-    {{--}--}}
-{{--</script>--}}
-{{--</head>--}}
-{{--<body onload="initialize()">--}}
-{{--<div>--}}
-    {{--<input id="address" type="textbox" style="width:60%" value="rua tabapuã - vila olimpia - são paulo">--}}
-    {{--<input type="button" value="Geocode" onclick="codeAddress()">--}}
-    {{--<input type="text" id="lat"/>--}}
-    {{--<input type="text" id="lng"/>--}}
-
-{{--</div>--}}
-{{--<div id="map_canvas" style="height:60%;top:30px"></div>--}}
-{{--@endsection--}}
